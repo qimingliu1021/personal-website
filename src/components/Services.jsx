@@ -11,12 +11,12 @@ const Services = () => {
     <>
       <SectionIntro
         eyebrow="Services"
-        title="We help you identify, explore and respond to new opportunities."
+        title="I am developing web/mobile apps, building data pipeline"
         className="mt-24 sm:mt-32 lg:mt-40"
       >
         <p>
-          As long as those opportunities involve giving us money to re-purpose
-          old projects — we can come up with an endless number of those.
+          I worked as SDE intern in Beijing, building startups in fashion and
+          tech in New York
         </p>
       </SectionIntro>
       <Container className="mt-16">
@@ -32,6 +32,7 @@ const Services = () => {
           </div>
           {/* List item */}
           <List className="mt-16 lg:mt-0 lg:w-1/2 lg:min-w-[33rem] lg:pl-4">
+            <h2>Working experience</h2>
             <ListItem title="Web development">
               We specialise in crafting beautiful, high quality marketing pages.
               The rest of the website will be a shell that uses lorem ipsum
@@ -41,6 +42,7 @@ const Services = () => {
               We have a team of skilled developers who are experts in the latest
               app frameworks, like Angular 1 and Google Web Toolkit.
             </ListItem>
+            <ListItem title="Projects"></ListItem>
             <ListItem title="E-commerce">
               We are at the forefront of modern e-commerce development. Which
               mainly means adding your logo to the Shopify store template we’ve

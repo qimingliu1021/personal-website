@@ -27,11 +27,11 @@ const Header = ({
       <div className="flex items-center justify-between">
         {/* Logo */}
         <Link href={"/"} aria-label="Home">
-          <Logo invert={invert}>Studio_clone</Logo>
+          <Logo invert={invert}>Qiming</Logo>
         </Link>
         <div className="flex items-center gap-x-8">
           <Button href={"/contact"} invert={invert}>
-            Contact us
+            Reaching out
           </Button>
           <button
             ref={toggleRef}
@@ -85,12 +85,14 @@ const Navigation = () => {
   return (
     <nav className="mt-px font-display text-5xl font-medium tracking-tight text-white">
       <NavigationRow>
-        <NavigationItem href="/work">Our Work</NavigationItem>
-        <NavigationItem href="/about">About Us</NavigationItem>
+        <NavigationItem href="/work">Tech</NavigationItem>
+        <NavigationItem href="/about">
+          Korla &rarr; New York City
+        </NavigationItem>
       </NavigationRow>
       <NavigationRow>
-        <NavigationItem href="/process">Our Process</NavigationItem>
-        <NavigationItem href="/blog">Blog</NavigationItem>
+        <NavigationItem href="/process">Entrepreneurship</NavigationItem>
+        <NavigationItem href="/blog">A drink, A story</NavigationItem>
       </NavigationRow>
     </nav>
   );
@@ -168,7 +170,7 @@ const RootLayoutInner = ({ children }) => {
                 <div className="grid grid-cols-1 gap-y-10 pb-16 pt-10 sm:grid-cols-2 sm:pt-16">
                   <div>
                     <h2 className="font-display text-base font-semibold text-white">
-                      Our offices
+                      Locations
                     </h2>
                     <Offices
                       invert
@@ -177,7 +179,7 @@ const RootLayoutInner = ({ children }) => {
                   </div>
                   <div className="sm:border-l sm:border-transparent sm:pl-16">
                     <h2 className="font-display text-base font-semibold text-white">
-                      Follow us
+                      Stay in touch
                     </h2>
                     <SocialMedia className="mt-6" invert />
                   </div>

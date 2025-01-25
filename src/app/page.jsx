@@ -12,12 +12,14 @@ export default function Home() {
       <Container className="mt-24 sm:mt-32">
         <FadeIn className="max-w-3xl">
           <h1 className="font-display text-5xl font-medium tracking-tight text-neutral-950 [text-wrap:balance] sm:text-7xl">
-            Make your online presence a reality with us!
+            Fashion, Beauty, Technology
           </h1>
           <p className="mt-6 text-xl text-neutral-600">
-            We are a group of developer working at the intersection of design
-            and technology. It is a really busy intersection though — a lot of
-            our staff have been involved in hit and runs.
+            Engineering intersect me with different industries. Start with Pomu.
+            Looking to be connected with New York City, to get rid of my major -
+            engineering. It turns out it was engineering that makes me deal with
+            different worlds. The way gets me involoved with New York City and
+            the world
           </p>
         </FadeIn>
       </Container>
