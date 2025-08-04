@@ -1,31 +1,34 @@
-import Link from "next/link";
 import clsx from "clsx";
 import {
-  BsFacebook,
-  BsTwitter,
   BsGithub,
   BsYoutube,
   BsLinkedin,
+  BsTwitter,
+  BsInstagram,
 } from "react-icons/bs";
 
 export const SocialMediaProfiles = [
   {
+    title: "Instagram",
+    href: "https://www.instagram.com/qiming_liiiu",
+    icon: BsInstagram,
+  },
+  {
     title: "Youtube",
-    href: "https://www.youtube.com/@reactjsBD/",
+    href: "https://www.youtube.com/@qimingliu1446",
     icon: BsYoutube,
   },
-  { title: "GitHub", href: "https://github.com/noorjsdivs/", icon: BsGithub },
   {
-    title: "Facebook",
-    href: "https://www.facebook.com/Noorlalu143/",
-    icon: BsFacebook,
+    title: "GitHub",
+    href: "https://github.com/qimingliu1021",
+    icon: BsGithub,
   },
   {
-    title: "Instagram",
-    href: "https://www.linkedin.com/in/noor-mohammad-ab2245193/",
+    title: "LinkedIn",
+    href: "https://www.linkedin.com/in/qimingliu1382/",
     icon: BsLinkedin,
   },
-  { title: "Twitter", href: "https://twitter.com", icon: BsTwitter },
+  { title: "Twitter", href: "https://x.com/Qiming685481", icon: BsTwitter },
 ];
 
 const SocialMedia = ({ className, invert = false }) => {
@@ -40,8 +43,10 @@ const SocialMedia = ({ className, invert = false }) => {
     >
       {SocialMediaProfiles.map((item) => (
         <li key={item.title}>
-          <Link
+          <a
             href={item.href}
+            target="_blank"
+            rel="noopener noreferrer"
             aria-label={item.title}
             className={clsx(
               "transition",
@@ -49,7 +54,7 @@ const SocialMedia = ({ className, invert = false }) => {
             )}
           >
             <item.icon className="h-6 w-6 fill-current" />
-          </Link>
+          </a>
         </li>
       ))}
     </ul>
