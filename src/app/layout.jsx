@@ -4,7 +4,7 @@ import "./globals.css";
 export const metadata = {
   title: {
     template: "blog_app",
-    default: "It's me, Qiming",
+    default: "Qiming Liu",
   },
 };
 
