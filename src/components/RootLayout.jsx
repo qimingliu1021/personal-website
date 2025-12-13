@@ -80,7 +80,7 @@ const ArticlesNavigation = () => {
       <div className="max-w-6xl mx-auto py-4 px-4">
         <div className="flex flex-col gap-4">
           <Link href="#" className="text-xl text-white">
-            I never thought I'd do startups
+            {"I never thought I'd do startups"}
           </Link>
           <Link href="#" className="text-xl text-white">
             I Ching
