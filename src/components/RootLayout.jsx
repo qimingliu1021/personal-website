@@ -58,10 +58,8 @@ const Header = ({
             aria-expanded={expanded.toString()}
             aria-controls={panelId}
             className={clsx(
-              "-m-2.5 rounded-full p-2.5",
-              invert
-                ? "qiming-close-btn"
-                : "qiming-articles-btn"
+              "-m-2.5 rounded-full p-2.5 transition-colors duration-200",
+              invert ? "qiming-btn-on-yellow" : "qiming-btn-on-blue"
             )}
             aria-label="Toggle navigation"
           >

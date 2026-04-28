@@ -11,22 +11,36 @@ html {
   scroll-snap-align: start;
 }
 
-.qiming-articles-btn:hover {
+/* Buttons on the blue page (not inverted) */
+.qiming-btn-on-blue {
+  background-color: #ffffff !important;
+  color: rgb(0, 46, 255) !important;
+}
+.qiming-btn-on-blue:hover {
   background-color: rgb(0, 46, 255) !important;
   color: #ffffff !important;
 }
-
-.qiming-close-btn {
-  background-color: #ffffff !important;
-  transition: background-color 200ms, color 200ms;
-}
-.qiming-close-btn svg {
+.qiming-btn-on-blue svg {
   fill: rgb(0, 46, 255) !important;
   transition: fill 200ms;
 }
-.qiming-close-btn:hover {
-  background-color: rgb(0, 46, 255) !important;
+.qiming-btn-on-blue:hover svg {
+  fill: #ffffff !important;
 }
-.qiming-close-btn:hover svg {
+
+/* Buttons on the yellow dropdown (inverted) */
+.qiming-btn-on-yellow {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+}
+.qiming-btn-on-yellow:hover {
+  background-color: rgb(0, 46, 255) !important;
+  color: #ffffff !important;
+}
+.qiming-btn-on-yellow svg {
+  fill: #000000 !important;
+  transition: fill 200ms;
+}
+.qiming-btn-on-yellow:hover svg {
   fill: #ffffff !important;
 }
