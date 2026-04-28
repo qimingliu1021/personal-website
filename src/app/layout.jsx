@@ -12,7 +12,8 @@ export default function Layout({ children }) {
   return (
     <html
       lang="en"
-      className="h-full bg-neutral-950 text-base antialiased text-neutral-100"
+      className="h-full text-base antialiased text-neutral-100"
+      style={{ backgroundColor: "rgb(255, 210, 23)" }}
     >
       <body className="flex min-h-full flex-col">
         <RootLayout>{children}</RootLayout>

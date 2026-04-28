@@ -194,10 +194,10 @@ const ProjectList = ({ className }) => {
     <FadeIn className={className}>
       <div className="h-full">
         <div className="mb-6">
-          <h2 className="text-2xl font-semibold text-neutral-900">
+          <h2 className="text-2xl font-semibold text-white">
             Recent Projects
           </h2>
-          <p className="text-neutral-600 mt-2">
+          <p className="text-white mt-2">
             From Korea to Beijing, Berkeley to NYU - my entrepreneurial journey
           </p>
         </div>

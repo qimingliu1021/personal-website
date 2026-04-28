@@ -2,6 +2,7 @@
 import { usePathname } from "next/navigation";
 import { useEffect, useId, useRef, useState } from "react";
 import { motion, MotionConfig, useReducedMotion } from "framer-motion";
+import CitiesPage from "./CitiesPage";
 import Container from "./Container";
 import Link from "next/link";
 import Image from "next/image";
@@ -29,7 +30,7 @@ const Header = ({
       <div className="flex items-center justify-between">
         <Link href={"/"} aria-label="Home">
           <Image
-            src={!expanded ? QimingBlack : Qiming}
+            src={expanded ? QimingBlack : Qiming}
             alt="Qiming Logo"
             width={120}
             height={40}
@@ -37,10 +38,13 @@ const Header = ({
         </Link>
 
         <div className="sm:border-l sm:border-transparent sm:pl-16">
-          <h2 className="font-display text-base font-semibold text-white">
+          <h2
+            className="font-display text-base font-semibold"
+            style={{ color: invert ? "#000000" : undefined }}
+          >
             Stay in touch
           </h2>
-          <SocialMedia className="mt-6" invert />
+          <SocialMedia className="mt-6" invert={!invert} />
         </div>
 
         <div className="flex items-center gap-x-4">
@@ -54,19 +58,14 @@ const Header = ({
             aria-expanded={expanded.toString()}
             aria-controls={panelId}
             className={clsx(
-              "group -m-2.5 rounded-full p-2.5 transition",
-              invert ? "hover:bg-white/10" : "hover:bg-neutral-950/10"
+              "-m-2.5 rounded-full p-2.5",
+              invert
+                ? "qiming-close-btn"
+                : "qiming-articles-btn"
             )}
             aria-label="Toggle navigation"
           >
-            <Icon
-              className={clsx(
-                "h-6 w-6",
-                invert
-                  ? "fill-white group-hover:fill-neutral-200"
-                  : "fill-neutral-950 group-hover:fill-neutral-700"
-              )}
-            />
+            <Icon className="h-6 w-6" />
           </button>
         </div>
       </div>
@@ -74,28 +73,88 @@ const Header = ({
   );
 };
 
+const DROPDOWN_BG = "rgb(255, 210, 23)";
+const DROPDOWN_FG = "#000000";
+
+const articles = [
+  "I never thought I'd do startups",
+  "I Ching",
+  "I hate CS, I thank CS",
+  "The matches",
+  "Toxic motivation - Hate and Anxiety",
+];
+
+const ArticleLink = ({ children }) => {
+  return (
+    <Link
+      href="#"
+      className="group relative inline-flex items-center gap-3 text-xl font-medium"
+      style={{ color: DROPDOWN_FG }}
+    >
+      <span className="relative">
+        <span className="relative z-10">{children}</span>
+        <span
+          className="absolute left-0 -bottom-0.5 h-[2px] w-full origin-left scale-x-0 transition-transform duration-300 ease-out group-hover:scale-x-100"
+          style={{ backgroundColor: DROPDOWN_FG }}
+        />
+      </span>
+      <span
+        aria-hidden
+        className="ml-1 inline-block opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+        style={{ color: DROPDOWN_FG }}
+      >
+        →
+      </span>
+    </Link>
+  );
+};
+
 const ArticlesNavigation = () => {
   return (
-    <div className="relative bg-neutral-950 before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-neutral-800">
-      <div className="max-w-6xl mx-auto py-4 px-4">
+    <div
+      className="relative"
+      style={{ backgroundColor: DROPDOWN_BG }}
+    >
+      <div className="max-w-6xl mx-auto py-6 px-4">
         <div className="flex flex-col gap-4">
-          <Link href="#" className="text-xl text-white">
-            {"I never thought I'd do startups"}
-          </Link>
-          <Link href="#" className="text-xl text-white">
-            I Ching
-          </Link>
-          <Link href="#" className="text-xl text-white">
-            I hate CS, I thank CS
-          </Link>
-          <Link href="#" className="text-xl text-white">
-            The matches
-          </Link>
-          <Link href="#" className="text-xl text-white">
-            Toxic motivation - Hate and Anxiety
-          </Link>
+          {articles.map((title) => (
+            <ArticleLink key={title}>{title}</ArticleLink>
+          ))}
         </div>
       </div>
+    </div>
+  );
+};
+
+const ScrollHint = () => {
+  return (
+    <div
+      aria-hidden
+      className="pointer-events-none absolute bottom-8 left-1/2 z-10 -translate-x-1/2"
+    >
+      <motion.svg
+        width="44"
+        height="56"
+        viewBox="0 0 44 56"
+        fill="none"
+        animate={{ y: [0, 6, 0], opacity: [0.35, 0.6, 0.35] }}
+        transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+      >
+        <path
+          d="M10 10 L22 24 L34 10"
+          stroke="#ffffff"
+          strokeWidth="5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M10 28 L22 42 L34 28"
+          stroke="#ffffff"
+          strokeWidth="5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </motion.svg>
     </div>
   );
 };
@@ -107,6 +166,7 @@ const RootLayoutInner = ({ children }) => {
   const closeRef = useRef();
   const navRef = useRef();
   const shouldReduceMotion = useReducedMotion();
+
   useEffect(() => {
     function onClick(event) {
       if (event.target.closest("a")?.href === window.location.href) {
@@ -119,6 +179,22 @@ const RootLayoutInner = ({ children }) => {
       window.removeEventListener("click", onClick);
     };
   }, []);
+
+  // Disable scroll-snap while the dropdown is expanding so the browser
+  // doesn't snap the page back to the blue card and hide the menu.
+  useEffect(() => {
+    const html = document.documentElement;
+    if (expanded) {
+      html.style.scrollSnapType = "none";
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } else {
+      // restore after the close animation finishes
+      const t = window.setTimeout(() => {
+        html.style.scrollSnapType = "";
+      }, 1200);
+      return () => window.clearTimeout(t);
+    }
+  }, [expanded]);
   return (
     <MotionConfig transition={shouldReduceMotion ? { duration: 0 } : undefined}>
       <header>
@@ -144,13 +220,35 @@ const RootLayoutInner = ({ children }) => {
         <motion.div
           layout
           id={panelId}
+          initial={false}
+          animate={{
+            backgroundColor: expanded
+              ? "rgba(255, 210, 23, 1)"
+              : "rgba(255, 210, 23, 0)",
+          }}
           style={{ height: expanded ? "auto" : "0.5rem" }}
-          className="relative z-50 overflow-hidden bg-neutral-950 pt-2"
+          className="relative z-50 overflow-hidden pt-2"
+          transition={{
+            duration: 1.1,
+            ease: [0.22, 1, 0.36, 1],
+            backgroundColor: {
+              duration: 0.01,
+              delay: expanded ? 0 : 1.1,
+            },
+          }}
           aria-hidden={expanded ? undefined : "true"}
           inert={expanded ? undefined : ""}
         >
-          <motion.div layout className="bg-neutral-800">
-            <div ref={navRef} className="bg-neutral-950 pb-16 pt-14">
+          <motion.div
+            layout
+            style={{ backgroundColor: "rgb(255, 210, 23)" }}
+            transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <div
+              ref={navRef}
+              className="pb-16 pt-14"
+              style={{ backgroundColor: "rgb(255, 210, 23)" }}
+            >
               <Header
                 invert
                 panelId={panelId}
@@ -172,15 +270,38 @@ const RootLayoutInner = ({ children }) => {
       </header>
       <motion.div
         layout
-        style={{ borderTopLeftRadius: 40, borderTopRightRadius: 40 }}
-        className="relative flex flex-auto overflow-hidden bg-white pt-14"
+        className="relative flex flex-col"
+        transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
       >
-        <motion.div
-          layout
-          className="relative isolate flex w-full flex-col pt-9"
+        <div
+          style={{
+            borderTopLeftRadius: 40,
+            borderTopRightRadius: 40,
+            borderBottomLeftRadius: 40,
+            borderBottomRightRadius: 40,
+            backgroundColor: "rgb(0, 46, 255)",
+            minHeight: "calc(100vh - 3.5rem)",
+            scrollSnapAlign: "end",
+            scrollSnapStop: "always",
+            scrollMarginBottom: "80px",
+          }}
+          className="relative flex w-full flex-col overflow-hidden pt-14"
         >
-          <main className="w-full flex-auto">{children}</main>
-        </motion.div>
+          <div className="relative isolate flex w-full flex-auto flex-col pt-9">
+            <main className="w-full flex-auto">{children}</main>
+          </div>
+          <ScrollHint />
+        </div>
+        <div
+          style={{
+            backgroundColor: "rgb(255, 210, 23)",
+            minHeight: "80vh",
+            scrollMarginTop: "35vh",
+          }}
+          className="snap-section w-full"
+        >
+          <CitiesPage />
+        </div>
       </motion.div>
     </MotionConfig>
   );
