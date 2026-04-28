@@ -124,11 +124,13 @@ const ArticlesNavigation = () => {
   );
 };
 
-const ScrollHint = () => {
+const ScrollHint = ({ onClick }) => {
   return (
-    <div
-      aria-hidden
-      className="pointer-events-none absolute bottom-8 left-1/2 z-10 -translate-x-1/2"
+    <button
+      type="button"
+      onClick={onClick}
+      aria-label="Scroll to next section"
+      className="absolute bottom-8 left-1/2 z-10 -translate-x-1/2 cursor-pointer bg-transparent p-2"
     >
       <motion.svg
         width="44"
@@ -153,7 +155,7 @@ const ScrollHint = () => {
           strokeLinejoin="round"
         />
       </motion.svg>
-    </div>
+    </button>
   );
 };
 
@@ -163,7 +165,130 @@ const RootLayoutInner = ({ children }) => {
   const openRef = useRef();
   const closeRef = useRef();
   const navRef = useRef();
+  const blueCardRef = useRef(null);
+  const citiesRef = useRef(null);
+  const animatingRef = useRef(false);
   const shouldReduceMotion = useReducedMotion();
+
+  // Block manual downward scroll once the user has reached the bottom of
+  // the blue card (the "stop" point). Only the arrow-click animation is
+  // allowed to pass through. We block at every layer (wheel, touch, keys,
+  // scrollbar) and also clamp the scroll position as a hard backstop.
+  useEffect(() => {
+    // Compute the maximum allowed scrollY (where the snap-end stop sits).
+    const maxScrollY = () => {
+      const blue = blueCardRef.current;
+      if (!blue) return Infinity;
+      const blueBottom = blue.offsetTop + blue.offsetHeight;
+      // 80px matches scrollMarginBottom: blue.bottom should sit 80px above
+      // viewport bottom when at the stop, i.e. scrollY = blueBottom - vh + 80.
+      return blueBottom - window.innerHeight + 80;
+    };
+
+    const isLocked = () => !animatingRef.current && !expanded;
+
+    // Proactive clamp: if the wheel delta would take us past the stop,
+    // cancel the event AND synchronously move only the allowed amount.
+    // We bypass `scroll-behavior: smooth` by writing scrollTop directly so
+    // these clamp scrolls are instantaneous and don't stack into a shake.
+    const onWheel = (e) => {
+      if (!isLocked()) return;
+      if (e.deltaY <= 0) return;
+      const max = maxScrollY();
+      const remaining = max - window.scrollY;
+      if (remaining <= 0) {
+        e.preventDefault();
+        return;
+      }
+      if (e.deltaY > remaining) {
+        e.preventDefault();
+        document.documentElement.scrollTop = window.scrollY + remaining;
+      }
+    };
+
+    let touchStartY = 0;
+    let lastTouchY = 0;
+    const onTouchStart = (e) => {
+      const y = e.touches[0]?.clientY ?? 0;
+      touchStartY = y;
+      lastTouchY = y;
+    };
+    const onTouchMove = (e) => {
+      if (!isLocked()) return;
+      const y = e.touches[0]?.clientY ?? 0;
+      const dy = lastTouchY - y;
+      lastTouchY = y;
+      if (dy <= 0) return;
+      const max = maxScrollY();
+      const remaining = max - window.scrollY;
+      if (remaining <= 0) {
+        e.preventDefault();
+        return;
+      }
+      if (dy > remaining) {
+        e.preventDefault();
+        document.documentElement.scrollTop = window.scrollY + remaining;
+      }
+    };
+
+    const blockedKeys = new Set([
+      "ArrowDown",
+      "PageDown",
+      "End",
+      " ",
+      "Spacebar",
+    ]);
+    const onKeyDown = (e) => {
+      if (!isLocked()) return;
+      if (blockedKeys.has(e.key) && window.scrollY >= maxScrollY() - 4) {
+        e.preventDefault();
+      }
+    };
+
+    // Hard, instant backstop: only triggers if something escapes the
+    // proactive clamp (e.g., keyboard). Direct scrollTop write so it's
+    // instant and doesn't stack with `scroll-behavior: smooth`.
+    const onScroll = () => {
+      if (!isLocked()) return;
+      const max = maxScrollY();
+      if (window.scrollY > max) {
+        document.documentElement.scrollTop = max;
+      }
+    };
+
+    window.addEventListener("wheel", onWheel, { passive: false });
+    window.addEventListener("touchstart", onTouchStart, { passive: true });
+    window.addEventListener("touchmove", onTouchMove, { passive: false });
+    window.addEventListener("keydown", onKeyDown);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("wheel", onWheel);
+      window.removeEventListener("touchstart", onTouchStart);
+      window.removeEventListener("touchmove", onTouchMove);
+      window.removeEventListener("keydown", onKeyDown);
+      window.removeEventListener("scroll", onScroll);
+    };
+  }, [expanded]);
+
+  // Click the arrow → release the gate, native smooth scroll to cities,
+  // then restore lock.
+  const scrollToCities = () => {
+    const cities = citiesRef.current;
+    if (!cities) return;
+    animatingRef.current = true;
+    const html = document.documentElement;
+    const prevSnap = html.style.scrollSnapType;
+    html.style.scrollSnapType = "none";
+    // Leave only a slim strip (~1/10 vh) of the blue page above cities.
+    const targetY =
+      cities.getBoundingClientRect().top + window.scrollY -
+      window.innerHeight / 10;
+    window.scrollTo({ top: targetY, behavior: "smooth" });
+    window.setTimeout(() => {
+      html.style.scrollSnapType = prevSnap;
+      animatingRef.current = false;
+    }, 1200);
+  };
 
   useEffect(() => {
     function onClick(event) {
@@ -272,6 +397,7 @@ const RootLayoutInner = ({ children }) => {
         transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
       >
         <div
+          ref={blueCardRef}
           style={{
             borderTopLeftRadius: 40,
             borderTopRightRadius: 40,
@@ -279,24 +405,21 @@ const RootLayoutInner = ({ children }) => {
             borderBottomRightRadius: 40,
             backgroundColor: "rgb(0, 46, 255)",
             minHeight: "calc(100vh - 3.5rem)",
-            scrollSnapAlign: "end",
-            scrollSnapStop: "always",
-            scrollMarginBottom: "80px",
           }}
           className="relative flex w-full flex-col overflow-hidden pt-14"
         >
           <div className="relative isolate flex w-full flex-auto flex-col pt-9">
             <main className="w-full flex-auto">{children}</main>
           </div>
-          <ScrollHint />
+          <ScrollHint onClick={scrollToCities} />
         </div>
         <div
+          ref={citiesRef}
           style={{
             backgroundColor: "rgb(255, 210, 23)",
             minHeight: "80vh",
-            scrollMarginTop: "35vh",
           }}
-          className="snap-section w-full"
+          className="w-full"
         >
           <CitiesPage />
         </div>
