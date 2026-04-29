@@ -1,6 +1,7 @@
 "use client";
 
-const BLUE = "rgb(0, 46, 255)";
+const OCEAN_BLUE = "rgb(0, 46, 255)";
+const MARKER_BLUE = "#2C2F3B";
 const BLACK = "#000000";
 
 // Positions are in percentages of the SVG viewBox (0-100).
@@ -36,11 +37,11 @@ const CityMarker = ({ city }) => {
       <div className="flex flex-col items-center">
         <div
           className="relative flex h-4 w-4 items-center justify-center rounded-full"
-          style={{ backgroundColor: BLUE }}
+          style={{ backgroundColor: MARKER_BLUE }}
         >
           <span
             className="absolute inline-flex h-full w-full animate-ping rounded-full opacity-60"
-            style={{ backgroundColor: BLUE }}
+            style={{ backgroundColor: MARKER_BLUE }}
           />
           <span className="relative block h-1.5 w-1.5 rounded-full bg-white" />
         </div>
@@ -48,7 +49,7 @@ const CityMarker = ({ city }) => {
           className="mt-2 rounded-md border-2 px-2 py-0.5 text-center font-display text-sm font-semibold leading-tight"
           style={{
             backgroundColor: "#ffffff",
-            borderColor: BLUE,
+            borderColor: MARKER_BLUE,
             color: BLACK,
           }}
         >
@@ -98,8 +99,7 @@ const CitiesPage = () => {
               preserveAspectRatio="none"
               className="absolute inset-0 h-full w-full"
               style={{
-                filter:
-                  "drop-shadow(0 6px 18px rgba(0, 46, 255, 0.35))",
+                filter: "drop-shadow(0 6px 18px rgba(0, 46, 255, 0.35))",
               }}
             >
               <defs>
@@ -146,7 +146,7 @@ const CitiesPage = () => {
                   Q 65 0 50 3
                   Q 35 0 22 6
                   Z"
-                fill={BLUE}
+                fill={OCEAN_BLUE}
               />
 
               {/* Texture — long, thin, drifting current lines.
@@ -204,7 +204,7 @@ const CitiesPage = () => {
             <path
               d={curvedPath(cities[0], cities[1], 12)}
               fill="none"
-              stroke={BLUE}
+              stroke={OCEAN_BLUE}
               strokeWidth={0.6}
               strokeDasharray="1.6 1.2"
               strokeLinecap="round"
@@ -214,7 +214,7 @@ const CitiesPage = () => {
             <path
               d={curvedPath(cities[2], cities[3], -12)}
               fill="none"
-              stroke={BLUE}
+              stroke={OCEAN_BLUE}
               strokeWidth={0.6}
               strokeDasharray="1.6 1.2"
               strokeLinecap="round"

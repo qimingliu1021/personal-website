@@ -14,14 +14,14 @@ html {
 /* Buttons on the blue page (not inverted) */
 .qiming-btn-on-blue {
   background-color: #ffffff !important;
-  color: rgb(0, 46, 255) !important;
+  color: #2C2F3B !important;
 }
 .qiming-btn-on-blue:hover {
-  background-color: rgb(0, 46, 255) !important;
+  background-color: #2C2F3B !important;
   color: #ffffff !important;
 }
 .qiming-btn-on-blue svg {
-  fill: rgb(0, 46, 255) !important;
+  fill: #2C2F3B !important;
   transition: fill 200ms;
 }
 .qiming-btn-on-blue:hover svg {
@@ -34,7 +34,7 @@ html {
   color: #000000 !important;
 }
 .qiming-btn-on-yellow:hover {
-  background-color: rgb(0, 46, 255) !important;
+  background-color: #2C2F3B !important;
   color: #ffffff !important;
 }
 .qiming-btn-on-yellow svg {

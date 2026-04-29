@@ -4,7 +4,7 @@ import ProjectList from "@/components/ProjectList";
 import Link from "next/link";
 
 export default function Home() {
-  const bgColor = "rgb(0, 46, 255)";
+  const bgColor = "#2C2F3B";
   const fgColor = "#ffffff";
   return (
     <main style={{ backgroundColor: bgColor, color: fgColor }}>

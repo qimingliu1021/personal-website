@@ -71,7 +71,7 @@ const Header = ({
   );
 };
 
-const DROPDOWN_BG = "rgb(255, 210, 23)";
+const DROPDOWN_BG = "#FAC03D";
 const DROPDOWN_FG = "#000000";
 
 const articles = [
@@ -346,8 +346,8 @@ const RootLayoutInner = ({ children }) => {
           initial={false}
           animate={{
             backgroundColor: expanded
-              ? "rgba(255, 210, 23, 1)"
-              : "rgba(255, 210, 23, 0)",
+              ? "rgba(250, 192, 61, 1)"
+              : "rgba(250, 192, 61, 0)",
           }}
           style={{ height: expanded ? "auto" : "0.5rem" }}
           className="relative z-50 overflow-hidden pt-2"
@@ -364,13 +364,13 @@ const RootLayoutInner = ({ children }) => {
         >
           <motion.div
             layout
-            style={{ backgroundColor: "rgb(255, 210, 23)" }}
+            style={{ backgroundColor: "#FAC03D" }}
             transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
           >
             <div
               ref={navRef}
               className="pb-16 pt-14"
-              style={{ backgroundColor: "rgb(255, 210, 23)" }}
+              style={{ backgroundColor: "#FAC03D" }}
             >
               <Header
                 invert
@@ -403,7 +403,7 @@ const RootLayoutInner = ({ children }) => {
             borderTopRightRadius: 40,
             borderBottomLeftRadius: 40,
             borderBottomRightRadius: 40,
-            backgroundColor: "rgb(0, 46, 255)",
+            backgroundColor: "#2C2F3B",
             minHeight: "calc(100vh - 3.5rem)",
           }}
           className="relative flex w-full flex-col overflow-hidden pt-14"
@@ -416,7 +416,7 @@ const RootLayoutInner = ({ children }) => {
         <div
           ref={citiesRef}
           style={{
-            backgroundColor: "rgb(255, 210, 23)",
+            backgroundColor: "#FAC03D",
             minHeight: "80vh",
           }}
           className="w-full"
